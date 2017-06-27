@@ -9,18 +9,16 @@ class Rnp < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "openssl"
   depends_on "cmocka"
   depends_on "json-c"
   depends_on "botan"
 
   def install
-    openssl = Formula["openssl"]
     jsonc = Formula["json-c"]
     cmocka = Formula["cmocka"]
     
-    ENV.append "CFLAGS", "-I#{openssl.opt_include} -I#{jsonc.opt_include}/json-c"
-    ENV.append "LDFLAGS", "-L#{openssl.opt_lib} -L#{jsonc.opt_lib} -L#{cmocka.opt_lib}"
+    ENV.append "CFLAGS", "-I#{jsonc.opt_include}/json-c"
+    ENV.append "LDFLAGS", "-L#{jsonc.opt_lib} -L#{cmocka.opt_lib}"
     
     (buildpath/"m4").mkpath
 

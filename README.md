@@ -1,12 +1,13 @@
 # Homebrew for rnp
 
 This tap contains formulae relating to [rnp](https://github.com/riboseinc/rnp).
+Currently it is HEAD-only formulae, i.e. you should install it using the --HEAD option:
 
 ## Install Tap
 
 ``` sh
 brew tap riboseinc/rnp
-brew install rnp
+brew install --HEAD rnp
 ```
 
 If the formula conflicts with one from Homebrew/homebrew or another tap, you can `brew install riboseinc/rnp/rnp`.
@@ -14,7 +15,7 @@ If the formula conflicts with one from Homebrew/homebrew or another tap, you can
 You can also install via URL:
 
 ```
-brew install https://raw.githubusercontent.com/riboseinc/homebrew-rnp/master/rnp.rb
+brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-rnp/master/rnp.rb
 ```
 
 ## Acceptable Formulae.
@@ -26,6 +27,12 @@ You can read Homebrew’s Acceptable Formulae document [here](https://github.com
 First, please run `brew update` and `brew doctor`.
 
 Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/brew/blob/master/docs/Troubleshooting.md#troubleshooting).
+
+If you got 'Botan build is missing a required feature' during the configure then you need to install botan using the --HEAD option:
+```
+brew unlink botan
+brew install --HEAD botan
+```
 
 **If you don’t read these it will take us far longer to help you with your problem.**
 

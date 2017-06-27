@@ -14,7 +14,6 @@ class Rnp < Formula
   depends_on "botan"
 
   devel do
-    head 'https://github.com/couchbase/geocouch.git', using: :git, tag: 'master'
     version '0.8.0'
   end
 

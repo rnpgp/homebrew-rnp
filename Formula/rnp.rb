@@ -1,7 +1,7 @@
 class Rnp < Formula
   desc "OpenPGP (RFC 4880) tools, replacement of GnuPG"
   homepage "https://github.com/riboseinc/rnp"
-  head "https://github.com/riboseinc/rnp.git", :shallow => false
+  head "https://github.com/riboseinc/rnp.git"
 
   depends_on "cmake" => :build
   depends_on "json-c"

@@ -1,5 +1,7 @@
 class Rnp < Formula
-  desc 'OpenPGP (RFC 4880) tools, replacement of GnuPG'
+  desc %w[A set of OpenPGP tools for encrypting, decrypting, signing,
+          and verifying files, with an emphasis on security and high
+          performance.].join(' ')
   homepage 'https://github.com/riboseinc/rnp'
   head 'https://github.com/riboseinc/rnp.git'
 

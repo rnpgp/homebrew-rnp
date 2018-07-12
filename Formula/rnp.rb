@@ -9,6 +9,8 @@ class Rnp < Formula
   depends_on 'json-c'
   depends_on 'botan'
 
+  needs :cxx11
+
   def install
     jsonc = Formula['json-c']
     botan = Formula['botan']

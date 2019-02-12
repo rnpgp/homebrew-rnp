@@ -4,8 +4,8 @@ class Rnp < Formula
           performance.].join(' ')
   homepage 'https://github.com/riboseinc/rnp'
   head 'https://github.com/riboseinc/rnp.git'
-  url 'https://github.com/riboseinc/rnp/archive/v0.10.0.tar.gz'
-  sha256 'bf5c29b6ce9c05913c742c2bd9914fb78ca3316a8a279bdababb5b58f083de0a'
+  url 'https://github.com/riboseinc/rnp/archive/v0.12.0.tar.gz'
+  sha256 '148d8437f15159ee754e77be6b717db2baeaab4e6f5213b9f63fec52ed0b0a39'
 
   depends_on 'cmake' => :build
   depends_on 'json-c'

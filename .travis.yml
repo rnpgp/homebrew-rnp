@@ -1,0 +1,34 @@
+lang: minimal
+os: osx
+
+# Refer to: https://docs.travis-ci.com/user/reference/osx/#macos-version
+#
+# Homebrew is expected to work on MacOS 10.12 and newer.  Some formulae can be
+# compiled on older systems as well, but not Botan.  Therefore, xcode7.3 image
+# is not included in following list.
+osx_image:
+  - xcode10.2
+  - xcode9.4
+  - xcode8.3
+
+env:
+  global:
+    TAP_NAME=riboseinc/rnp
+    FORMULA_NAME=${TAP_NAME}/rnp
+    OPTS=""
+
+install:
+  - brew update
+  - brew tap ${TAP_NAME} "${TRAVIS_BUILD_DIR}"
+  - brew install ${FORMULA_NAME} ${OPTS}
+
+script:
+  - brew test ${FORMULA_NAME}
+
+matrix:
+  include:
+    # Install HEAD version
+    - env: OPTS="--HEAD"
+
+  allow_failures:
+    - env: OPTS="--HEAD"

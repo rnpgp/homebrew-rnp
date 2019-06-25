@@ -13,9 +13,9 @@ osx_image:
 
 env:
   global:
-    TAP_NAME=riboseinc/rnp
-    FORMULA_NAME=${TAP_NAME}/rnp
-    OPTS=""
+    - TAP_NAME=riboseinc/rnp
+    - FORMULA_NAME=${TAP_NAME}/rnp
+    - OPTS=""
 
 install:
   - brew update

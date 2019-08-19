@@ -2,9 +2,9 @@ class Rnp < Formula
   desc %w[A set of OpenPGP tools for encrypting, decrypting, signing,
           and verifying files, with an emphasis on security and high
           performance.].join(' ')
-  homepage 'https://github.com/riboseinc/rnp'
-  head 'https://github.com/riboseinc/rnp.git'
-  url 'https://github.com/riboseinc/rnp/archive/v0.12.0.tar.gz'
+  homepage 'https://github.com/rnpgp/rnp'
+  head 'https://github.com/rnpgp/rnp.git'
+  url 'https://github.com/rnpgp/rnp/archive/v0.12.0.tar.gz'
   sha256 '148d8437f15159ee754e77be6b717db2baeaab4e6f5213b9f63fec52ed0b0a39'
 
   depends_on 'cmake' => :build

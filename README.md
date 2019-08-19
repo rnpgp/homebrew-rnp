@@ -1,6 +1,6 @@
 # Homebrew for rnp
 
-This tap contains formulae relating to [rnp](https://github.com/riboseinc/rnp).
+This tap contains formulae relating to [rnp](https://github.com/rnpgp/rnp).
 
 
 ## Quick Install
@@ -8,20 +8,20 @@ This tap contains formulae relating to [rnp](https://github.com/riboseinc/rnp).
 Run this and it's all done.
 
 ``` sh
-brew tap riboseinc/rnp
+brew tap rnpgp/rnp
 brew install --HEAD rnp
 ```
 
 Or:
 
 ``` sh
-brew install --HEAD riboseinc/rnp/rnp
+brew install --HEAD rnpgp/rnp/rnp
 ```
 
 ## Install Tap
 
 ``` sh
-brew tap riboseinc/rnp
+brew tap rnpgp/rnp
 ```
 
 ## Install rnp
@@ -36,13 +36,13 @@ If the formula conflicts with one from `Homebrew/homebrew` or another
 tap, you can run:
 
 ``` sh
-brew install --HEAD riboseinc/rnp/rnp
+brew install --HEAD rnpgp/rnp/rnp
 ```
 
 You can also install via URL:
 
 ``` sh
-brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-rnp/master/rnp.rb
+brew install --HEAD https://raw.githubusercontent.com/rnpgp/homebrew-rnp/master/rnp.rb
 ```
 
 ## rnp HEAD requires botan HEAD

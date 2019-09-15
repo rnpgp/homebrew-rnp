@@ -77,7 +77,7 @@ Checklist].
 
 === Botan
 
-If you got 'Botan build is missing a required feature' during
+If you got '`Botan build is missing a required feature`' during
 the configure then you need to install botan using the `--HEAD` option:
 
 [source,sh]

@@ -28,7 +28,7 @@ jobs:
     - name: Publish to Bintray
       env:
         BINTRAY_USER: rnp-ci
-        BINTRAY_API_KEY: {{ secret.BINTRAY_CI_TOKEN }}
+        BINTRAY_API_KEY: {{ secrets.BINTRAY_CI_TOKEN }}
         BINTRAY_REPO: rnp
       run:
         pushToBintray.sh

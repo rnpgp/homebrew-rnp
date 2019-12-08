@@ -1,0 +1,34 @@
+name: CI
+
+on: [push]
+
+env:
+  TAP_NAME: rnpgp/rnp
+  FORMULA_NAME: ${TAP_NAME}/rnp
+  OPTS: ""
+  BINTRAY_PACKAGE: rnp
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Installing dependencies
+      run: |
+        brew update
+        brew tap ${TAP_NAME}
+        brew install --build-bottle ${FORMULA_NAME} ${OPTS}
+    - name: Test the formula
+      run: brew test ${FORMULA_NAME}
+    - name: Build the bottle
+      run: |
+        brew install jq
+        brew bottle rnp --json
+        source ci/read_bottle_metadata.sh
+        ci/build_bintray_descriptor.rb
+    - name: Publish to Bintray
+      env:
+        BINTRAY_USER: rnp-ci
+        BINTRAY_API_KEY: {{ secret.BINTRAY_CI_TOKEN }}
+        BINTRAY_REPO: rnp
+      run:
+        pushToBintray.sh

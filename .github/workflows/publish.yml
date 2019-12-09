@@ -4,7 +4,7 @@ on: [push]
 
 env:
   TAP_NAME: rnpgp/rnp
-  FORMULA_NAME: rnpgp/rnp
+  FORMULA_NAME: rnpgp/rnp/rnp
   OPTS: ""
   BINTRAY_PACKAGE: rnp
 jobs:

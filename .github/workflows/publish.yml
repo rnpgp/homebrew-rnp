@@ -7,6 +7,7 @@ env:
   FORMULA_NAME: rnpgp/rnp/rnp
   OPTS: ""
   BINTRAY_PACKAGE: rnp
+  BINTRAY_DESCRIPTOR_FILENAME: bintray_descriptor.json
 jobs:
   build:
     runs-on: macos-latest

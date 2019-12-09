@@ -32,4 +32,4 @@ jobs:
         BINTRAY_API_KEY: "{{ secrets.BINTRAY_CI_TOKEN }}"
         BINTRAY_REPO: rnp
       run:
-        ci/pushToBintray.sh
+        source ci/pushToBintray.sh

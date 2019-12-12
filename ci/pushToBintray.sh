@@ -18,9 +18,14 @@ main() {
   if (check_package_exists); then
     echostatus "The package ${BINTRAY_PACKAGE} does not exit. It will be created"
     create_package
+    if [ ! "$?" ]; then
+      echostatus "The package could not be created"
+      return 0
+    fi
   fi
 
   deploy_bottle
+  return $?
 }
 
 check_package_exists() {
@@ -42,16 +47,20 @@ create_package() {
     \"labels\": [\"bash\", \"example\"]
     }"
   fi
-
-  ${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}
+  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO})
+  echostatus "Package upload returned status $output"
+  uploaded=` [ $output -eq 201 ] `
+  return ${uploaded}
 }
 
 deploy_bottle() {
   if (upload_content); then
     echostatus "Publishing ${BOTTLE}..."
-    ${CURL} -X POST ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }"
+    result=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }") -eq 201 ] `
+    return ${result}
   else
     echostatus "[SEVERE] First you should upload your bottle ${BOTTLE}"
+    return 0
   fi
 }
 
@@ -63,3 +72,8 @@ upload_content() {
 }
 
 main "$@"
+if [ ! "$?" ]; then
+  ! true
+else
+  true
+fi

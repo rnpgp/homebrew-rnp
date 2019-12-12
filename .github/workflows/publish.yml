@@ -31,5 +31,6 @@ jobs:
         BINTRAY_USER: rnp-ci
         BINTRAY_API_KEY: "${{ secrets.BINTRAY_CI_TOKEN }}"
         BINTRAY_REPO: rnp
-      run:
+      run: |
+        source ci/read_bottle_metadata.sh
         source ci/pushToBintray.sh

@@ -49,7 +49,7 @@ create_package() {
 deploy_bottle() {
   if (upload_content); then
     echostatus "Publishing ${BOTTLE}..."
-    ${CURL} -X POST ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${PCK_VERSION}/publish -d "{ \"discard\": \"false\" }"
+    ${CURL} -X POST ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }"
   else
     echostatus "[SEVERE] First you should upload your bottle ${BOTTLE}"
   fi
@@ -57,7 +57,7 @@ deploy_bottle() {
 
 upload_content() {
   echostatus "Uploading ${BOTTLE}..."
-  uploaded=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${PCK_VERSION} ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BOTTLE}) -eq 201 ] `
+  uploaded=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BOTTLE}) -eq 201 ] `
   echostatus "BOTTLE ${BOTTLE} uploaded? y:1/N:0 ${uploaded}"
   return ${uploaded}
 }

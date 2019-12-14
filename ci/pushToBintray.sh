@@ -7,6 +7,7 @@ API=https://api.bintray.com
 # BINTRAY_REPO=$3
 # BINTRAY_PACKAGE=$4
 # BOTTLE_VERSION
+# BINTRAY_SUBJECT -- owner of the repo
 BOTTLE="${BOTTLE_LOCAL_FILENAME}"
 
 echostatus() {
@@ -30,7 +31,7 @@ main() {
 
 check_package_exists() {
   echostatus "Checking if package ${BINTRAY_PACKAGE} exists..."
-  package_exists=`[ $(${CURL} --write-out %{http_code} --silent --output /dev/null -X GET  ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE})  -eq 200 ]`
+  package_exists=`[ $(${CURL} --write-out %{http_code} --silent --output /dev/null -X GET  ${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE})  -eq 200 ]`
   echostatus "Package ${BINTRAY_PACKAGE} exists? y:1/N:0 ${package_exists}"
   return ${package_exists}
 }
@@ -47,7 +48,7 @@ create_package() {
     \"labels\": [\"bash\", \"example\"]
     }"
   fi
-  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO})
+  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST -d "${data}" ${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO})
   echostatus "Package upload returned status $output"
   uploaded=` [ $output -eq 201 ] `
   return ${uploaded}
@@ -56,7 +57,7 @@ create_package() {
 deploy_bottle() {
   if (upload_content); then
     echostatus "Publishing ${BOTTLE}..."
-    result=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }") -eq 201 ] `
+    result=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }") -eq 201 ] `
     return ${result}
   else
     echostatus "[SEVERE] First you should upload your bottle ${BOTTLE}"
@@ -66,7 +67,7 @@ deploy_bottle() {
 
 upload_content() {
   echostatus "Uploading ${BOTTLE}..."
-  uploaded=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${BOTTLE}) -eq 201 ] `
+  uploaded=` [ $(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE}) -eq 201 ] `
   echostatus "BOTTLE ${BOTTLE} uploaded? y:1/N:0 ${uploaded}"
   return ${uploaded}
 }

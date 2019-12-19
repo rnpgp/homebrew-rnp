@@ -73,7 +73,7 @@ deploy_bottle() {
 
 upload_content() {
   echostatus "Uploading ${BOTTLE}..."
-  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE})
+  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE}?override=1)
   echostatus "Content upload returned status $output"
   if [ $output -eq 201 ]; then
     echo 1

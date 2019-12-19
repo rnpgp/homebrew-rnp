@@ -63,7 +63,7 @@ deploy_bottle() {
     echostatus "Publishing ${BOTTLE}..."
     output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }")
     echostatus "Content publish returned status $output"
-    if [ $output -eq 201 ]; then
+    if [ $output -eq 200 ]; then
       echo 1
     fi
   else

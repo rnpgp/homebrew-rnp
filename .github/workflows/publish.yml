@@ -3,8 +3,7 @@ name: CI
 on: [push]
 
 env:
-  TAP_NAME: rnpgp/rnp
-  FORMULA_NAME: rnpgp/rnp/rnp
+  FORMULA: ./Formula/rnp.rb
   OPTS: ""
   BINTRAY_PACKAGE: rnp
   BINTRAY_DESCRIPTOR_FILENAME: bintray_descriptor.json
@@ -13,17 +12,13 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Installing dependencies
-      run: |
-        brew update
-        brew tap ${TAP_NAME}
-        brew install --build-bottle ${FORMULA_NAME} ${OPTS}
+    - name: Build the formula
+      run: brew install --build-bottle ${FORMULA}
     - name: Test the formula
-      run: brew test ${FORMULA_NAME}
+      run: brew test ${FORMULA}
     - name: Build the bottle
       run: |
-        brew install jq
-        brew bottle rnp --json
+        brew bottle --json --force-core-tap ${FORMULA}
         source ci/read_bottle_metadata.sh
         ci/build_bintray_descriptor.rb
     - name: Publish to Bintray

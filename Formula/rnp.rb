@@ -4,9 +4,7 @@ class Rnp < Formula
           performance.].join(' ')
   homepage 'https://github.com/rnpgp/rnp'
   head 'https://github.com/rnpgp/rnp.git'
-  url 'https://github.com/rnpgp/rnp.git',
-       :tag      => 'v0.12.0',
-       :revision => '586caec6cd728d54dbd281cafe17ee2e1f29dbf1'
+  url 'https://github.com/rnpgp/rnp.git', :tag => 'v0.13.0'
 
   depends_on 'cmake' => :build
   depends_on 'json-c'

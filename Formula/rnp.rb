@@ -4,8 +4,7 @@ class Rnp < Formula
           performance.].join(' ')
   homepage 'https://github.com/rnpgp/rnp'
   head 'https://github.com/rnpgp/rnp.git'
-  url 'https://github.com/rnpgp/rnp/archive/v0.12.0.tar.gz'
-  sha256 '148d8437f15159ee754e77be6b717db2baeaab4e6f5213b9f63fec52ed0b0a39'
+  url 'https://github.com/rnpgp/rnp.git', tag: 'v0.13.1'
 
   depends_on 'cmake' => :build
   depends_on 'json-c'
@@ -14,6 +13,11 @@ class Rnp < Formula
   def install
     jsonc = Formula['json-c']
     botan = Formula['botan']
+
+    tag = `git describe`
+    ohai "Building tag #{tag}"
+    # only required to set when can't be determined automatically
+    # version tag
 
     mkdir 'build' do
       system(

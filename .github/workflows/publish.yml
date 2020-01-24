@@ -16,6 +16,8 @@ jobs:
       run: brew install --build-bottle ${FORMULA}
     - name: Test the formula
       run: brew test ${FORMULA}
+    - name: Audit the formula
+      run: brew audit --strict ${FORMULA}
     - name: Build the bottle
       run: |
         brew bottle --json --force-core-tap ${FORMULA}

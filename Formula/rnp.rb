@@ -15,12 +15,8 @@ class Rnp < Formula
     mkdir "build" do
       system(
         "cmake",
-        "-DBUILD_SHARED_LIBS=ON",
-        "-DBUILD_TESTING=OFF",
-        "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-        "-DCMAKE_PREFIX_PATH=#{botan.prefix};#{jsonc.prefix}",
-        *std_cmake_args,
         "..",
+        *std_cmake_args,
       )
       system "make", "install"
     end

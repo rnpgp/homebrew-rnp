@@ -28,8 +28,7 @@ brew tap rnpgp/rnp
 
 == Install rnp
 
-Currently it is a HEAD-only formula, i.e., you must install it using the
-`--HEAD` option:
+To install HEAD version, you can use the `--HEAD` option:
 
 [source,sh]
 ----

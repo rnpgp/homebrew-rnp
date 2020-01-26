@@ -12,11 +12,6 @@ class Rnp < Formula
     botan = Formula["botan"]
     jsonc = Formula["json-c"]
 
-    tag = `git describe`
-    ohai "Building tag #{tag}"
-    # only required to set when can't be determined automatically
-    # version tag
-
     mkdir "build" do
       system(
         "cmake",

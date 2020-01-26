@@ -1,39 +1,37 @@
 class Rnp < Formula
-  desc %w[A set of OpenPGP tools for encrypting, decrypting, signing,
-          and verifying files, with an emphasis on security and high
-          performance.].join(' ')
-  homepage 'https://github.com/rnpgp/rnp'
-  head 'https://github.com/rnpgp/rnp.git'
-  url 'https://github.com/rnpgp/rnp.git', tag: 'v0.13.1'
+  desc "A set of OpenPGP tools for encrypting, decrypting, signing, and verifying files, with an emphasis on security and high performance"
+  homepage "https://github.com/rnpgp/rnp"
+  url "https://github.com/rnpgp/rnp.git", :tag => "v0.13.1"
+  head "https://github.com/rnpgp/rnp.git"
 
-  depends_on 'cmake' => :build
-  depends_on 'json-c'
-  depends_on 'botan'
+  depends_on "cmake" => :build
+  depends_on "botan"
+  depends_on "json-c"
 
   def install
-    jsonc = Formula['json-c']
-    botan = Formula['botan']
+    botan = Formula["botan"]
+    jsonc = Formula["json-c"]
 
     tag = `git describe`
     ohai "Building tag #{tag}"
     # only required to set when can't be determined automatically
     # version tag
 
-    mkdir 'build' do
+    mkdir "build" do
       system(
-        'cmake',
-        '-DBUILD_SHARED_LIBS=ON',
-        '-DBUILD_TESTING=OFF',
+        "cmake",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
         "-DCMAKE_INSTALL_PREFIX=#{prefix}",
         "-DCMAKE_PREFIX_PATH=#{botan.prefix};#{jsonc.prefix}",
         *std_cmake_args,
-        '..'
+        "..",
       )
-      system 'make', 'install'
+      system "make", "install"
     end
   end
 
   test do
-    system 'rnp', '--version'
+    system "rnp", "--version"
   end
 end

@@ -1,5 +1,5 @@
 class Rnp < Formula
-  desc "A set of OpenPGP tools for encrypting, decrypting, signing, and verifying files, with an emphasis on security and high performance"
+  desc "OpenPGP tools for encrypting, decrypting, signing, and verifying files"
   homepage "https://github.com/rnpgp/rnp"
   url "https://github.com/rnpgp/rnp.git", :tag => "v0.13.1"
   head "https://github.com/rnpgp/rnp.git"

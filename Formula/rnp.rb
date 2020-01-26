@@ -9,9 +9,6 @@ class Rnp < Formula
   depends_on "json-c"
 
   def install
-    botan = Formula["botan"]
-    jsonc = Formula["json-c"]
-
     mkdir "build" do
       system(
         "cmake",

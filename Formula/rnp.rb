@@ -3,7 +3,7 @@ class Rnp < Formula
   homepage "https://github.com/rnpgp/rnp"
   url "https://github.com/rnpgp/rnp.git",
       :tag => "v0.13.1",
-      :revision => "0055907d3f3dd845f3283195b5d8924260aebbc4"
+      :revision => "ad35f7c37467800a1b2b081fd80e1eb307dc2af9"
   head "https://github.com/rnpgp/rnp.git"
 
   depends_on "cmake" => :build

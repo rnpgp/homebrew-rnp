@@ -22,6 +22,12 @@ class Rnp < Formula
   end
 
   test do
-    system "rnp", "--version"
+    testin = testpath/"message.txt"
+    testin.write "hello"
+    encrypted = testpath/"enc.rnp"
+    decrypted = testpath/"dec.rnp"
+    shell_output("rnp -c --password DUMMY --output #{encrypted} #{testin}")
+    shell_output("rnp -decrypt --password DUMMY --output #{decrypted} #{encrypted}")
+    cmp testin, decrypted
   end
 end

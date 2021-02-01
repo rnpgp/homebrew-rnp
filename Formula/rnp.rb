@@ -1,7 +1,7 @@
 class Rnp < Formula
-  desc "OpenPGP tools for encrypting, decrypting, signing, and verifying files"
+  desc "Set of OpenPGP (RFC4880) tools"
   homepage "https://github.com/rnpgp/rnp"
-  url "https://github.com/rnpgp/rnp.git", :tag => "v0.13.1"
+  url "https://github.com/rnpgp/rnp.git", tag: "v0.14.0", revision: "7c8492b44ab5105dab410cfd00f35b492b68d48e"
   head "https://github.com/rnpgp/rnp.git"
 
   depends_on "cmake" => :build
@@ -9,29 +9,24 @@ class Rnp < Formula
   depends_on "json-c"
 
   def install
-    botan = Formula["botan"]
-    jsonc = Formula["json-c"]
-
-    tag = `git describe`
-    ohai "Building tag #{tag}"
-    # only required to set when can't be determined automatically
-    # version tag
-
     mkdir "build" do
       system(
         "cmake",
-        "-DBUILD_SHARED_LIBS=ON",
-        "-DBUILD_TESTING=OFF",
-        "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-        "-DCMAKE_PREFIX_PATH=#{botan.prefix};#{jsonc.prefix}",
-        *std_cmake_args,
         "..",
+        *std_cmake_args,
       )
       system "make", "install"
     end
   end
 
   test do
-    system "rnp", "--version"
+    testin = testpath/"message.txt"
+    testin.write "hello"
+    encrypted = testpath/"enc.rnp"
+    decrypted = testpath/"dec.rnp"
+    shell_output("rnpkeys --generate-key --password=PASSWORD")
+    shell_output("rnp -c --password DUMMY --output #{encrypted} #{testin}")
+    shell_output("rnp --decrypt --password DUMMY --output #{decrypted} #{encrypted}")
+    cmp testin, decrypted
   end
 end

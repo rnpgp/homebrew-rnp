@@ -1,10 +1,19 @@
-= Homebrew for rnp
+= Homebrew formula for RNP
 
 This tap contains formulae relating to https://github.com/rnpgp/rnp[rnp].
 
-== Quick Install
+== Quick install
 
 Run this and it's all done.
+
+[source,sh]
+----
+brew install rnpgp/rnp/rnp
+----
+
+== Install Tap
+
+Alternatively install the tap, then the formula:
 
 [source,sh]
 ----
@@ -12,23 +21,9 @@ brew tap rnpgp/rnp
 brew install --HEAD rnp
 ----
 
-Or:
-
-[source,sh]
-----
-brew install --HEAD rnpgp/rnp/rnp
-----
-
-== Install Tap
-
-[source,sh]
-----
-brew tap rnpgp/rnp
-----
-
 == Install rnp
 
-To install HEAD version, you can use the `--HEAD` option:
+To install the latest version, you can use the `--HEAD` option:
 
 [source,sh]
 ----
@@ -41,13 +36,6 @@ tap, you can run:
 [source,sh]
 ----
 brew install --HEAD rnpgp/rnp/rnp
-----
-
-You can also install via URL:
-
-[source,sh]
-----
-brew install --HEAD https://raw.githubusercontent.com/rnpgp/homebrew-rnp/master/rnp.rb
 ----
 
 == rnp HEAD requires botan HEAD
@@ -91,11 +79,9 @@ your problem.*
 == More Documentation
 
 `brew help`, `man brew` or check
-https://github.com/Homebrew/brew/tree/master/docs#readme[our
-documentation].
+https://github.com/Homebrew/brew/tree/master/docs#readme[our documentation].
 
 == License
 
 Code is under the
-https://github.com/Homebrew/brew/tree/master/LICENSE.txt[BSD 2 Clause
-license].
+https://github.com/Homebrew/brew/tree/master/LICENSE.txt[BSD 2 Clause license].

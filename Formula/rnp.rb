@@ -1,7 +1,7 @@
 class Rnp < Formula
-  desc "Set of OpenPGP (RFC4880) tools"
+  desc "RNP OpenPGP command-line tools and library"
   homepage "https://github.com/rnpgp/rnp"
-  url "https://github.com/rnpgp/rnp.git", tag: "v0.14.0", revision: "7c8492b44ab5105dab410cfd00f35b492b68d48e"
+  url "https://github.com/rnpgp/rnp.git", tag: "v0.15.1", revision: "1af627eb7d9ade84ae95078d87280ded40a91e1d"
   head "https://github.com/rnpgp/rnp.git"
 
   depends_on "cmake" => :build

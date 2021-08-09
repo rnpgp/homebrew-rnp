@@ -20,7 +20,7 @@ jobs:
       run: brew audit --new-formula ${FORMULA}
     - name: Build the bottle
       run: |
-        brew bottle --json --force-core-tap ${FORMULA}
+        brew bottle --json --force-core-tap --no-rebuild ${FORMULA}
         source ci/read_bottle_metadata.sh
         ci/build_bintray_descriptor.rb
     - name: Publish to Bintray

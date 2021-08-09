@@ -1,8 +1,8 @@
 class Rnp < Formula
   desc "High-performance OpenPGP command-line tools and library"
   homepage "https://github.com/rnpgp/rnp"
-  url "https://github.com/rnpgp/rnp/archive/refs/tags/v0.15.1.tar.gz"
-  sha256 "ce14bec9d361f9606a2448096463b8a563692daf0c8a758424b1a0def9d3f787"
+  url "https://github.com/rnpgp/rnp/archive/refs/tags/v0.15.2.tar.gz"
+  sha256 "198f239808093312d61a54fcdde94aa147260867bde9ee521a31185bab34747e"
   head "https://github.com/rnpgp/rnp.git"
 
   depends_on "cmake" => :build

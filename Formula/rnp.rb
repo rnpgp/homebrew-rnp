@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Rnp < Formula
   desc "High-performance OpenPGP command-line tools and library"
   homepage "https://github.com/rnpgp/rnp"

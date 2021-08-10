@@ -8,23 +8,26 @@ API=https://api.bintray.com
 # BINTRAY_PACKAGE=$4
 # BOTTLE_VERSION
 # BINTRAY_SUBJECT -- owner of the repo
-BOTTLE="${BOTTLE_LOCAL_FILENAME}"
+BOTTLE="${BOTTLE_LOCAL_FILENAME:?Missing BOTTLE_LOCAL_FILENAME}"
 
 echostatus() {
-  echo "$@" 1>&2;
+  echo "$@" 1>&2
+}
+
+curlit() {
+  curl -u"${BINTRAY_USER}:${BINTRAY_API_KEY}" -H Content-Type:application/json -H Accept:application/json "$@"
 }
 
 main() {
-  CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Content-Type:application/json -H Accept:application/json"
-  if [ ! $(check_package_exists) ]; then
+  if [[ -z "$(check_package_exists)" ]]; then
     echostatus "The package ${BINTRAY_PACKAGE} does not exit. It will be created"
-    if [ ! $(create_package) ]; then
+    if [[ -z "$(create_package)" ]]; then
       echostatus "The package could not be created"
       exit 1
     fi
   fi
 
-  if [ ! $(deploy_bottle) ]; then
+  if [[ -z "$(deploy_bottle)" ]]; then
     echostatus "Error deploying the bottle"
     exit 2
   fi
@@ -32,16 +35,16 @@ main() {
 
 check_package_exists() {
   echostatus "Checking if package ${BINTRAY_PACKAGE} exists..."
-  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X GET ${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE})
+  output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X GET "${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}")
   echostatus "Package check returned status $output"
-  if [ $output -eq 200 ]; then
+  if [[ $output -eq 200 ]]; then
     echo 1
   fi
 }
 
 create_package() {
   echostatus "Creating package ${BINTRAY_PACKAGE}..."
-  if [ -f "${BINTRAY_DESCRIPTOR_FILENAME}" ]; then
+  if [[ -f "${BINTRAY_DESCRIPTOR_FILENAME}" ]]; then
     data="@${BINTRAY_DESCRIPTOR_FILENAME}"
   else
     data="{
@@ -51,19 +54,19 @@ create_package() {
     \"labels\": [\"bash\", \"example\"]
     }"
   fi
-  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST -d "${data}" ${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO})
+  output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X POST -d "${data}" "${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}")
   echostatus "Package upload returned status $output"
-  if [ $output -eq 201 ]; then
+  if [[ $output -eq 201 ]]; then
     echo 1
   fi
 }
 
 deploy_bottle() {
-  if [ $(upload_content) ]; then
+  if [[ $(upload_content) ]]; then
     echostatus "Publishing ${BOTTLE}..."
-    output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -X POST ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish -d "{ \"discard\": \"false\" }")
+    output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X POST "${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish" -d "{ \"discard\": \"false\" }")
     echostatus "Content publish returned status $output"
-    if [ $output -eq 200 ]; then
+    if [[ $output -eq 200 ]]; then
       echo 1
     fi
   else
@@ -73,9 +76,9 @@ deploy_bottle() {
 
 upload_content() {
   echostatus "Uploading ${BOTTLE}..."
-  output=$(${CURL} --write-out %{http_code} --silent --output /dev/null -T ${BOTTLE} -H X-Bintray-Package:${BINTRAY_PACKAGE} -H X-Bintray-Version:${BOTTLE_VERSION} ${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE}?override=1)
+  output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -T "${BOTTLE}" -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BOTTLE_VERSION}" "${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE}?override=1")
   echostatus "Content upload returned status $output"
-  if [ $output -eq 201 ]; then
+  if [[ $output -eq 201 ]]; then
     echo 1
   fi
 }

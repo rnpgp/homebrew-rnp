@@ -31,4 +31,4 @@ jobs:
         BINTRAY_REPO: rnp
       run: |
         source ci/read_bottle_metadata.sh
-        source ci/pushToBintray.sh
+        ci/pushToBintray.sh

@@ -1,34 +1,33 @@
-name: CI
-
-on: [push]
-
-env:
-  FORMULA: ./Formula/rnp.rb
-  OPTS: ""
-  BINTRAY_PACKAGE: rnp
-  BINTRAY_DESCRIPTOR_FILENAME: bintray_descriptor.json
+name: brew pr-pull
+on:
+  pull_request_target:
+    types:
+      - labeled
 jobs:
-  build:
-    runs-on: macos-latest
+  pr-pull:
+    if: contains(github.event.pull_request.labels.*.name, 'pr-pull')
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build the formula
-      run: brew install --build-bottle ${FORMULA}
-    - name: Test the formula
-      run: brew test ${FORMULA}
-    - name: Audit the formula
-      run: brew audit --new-formula ${FORMULA}
-    - name: Build the bottle
-      run: |
-        brew bottle --json --force-core-tap ${FORMULA}
-        source ci/read_bottle_metadata.sh
-        ci/build_bintray_descriptor.rb
-    - name: Publish to Bintray
-      env:
-        BINTRAY_SUBJECT: rnpgp
-        BINTRAY_USER: rnp-ci
-        BINTRAY_API_KEY: "${{ secrets.BINTRAY_CI_TOKEN }}"
-        BINTRAY_REPO: rnp
-      run: |
-        source ci/read_bottle_metadata.sh
-        source ci/pushToBintray.sh
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Set up git
+        uses: Homebrew/actions/git-user-config@master
+
+      - name: Pull bottles
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+          PULL_REQUEST: ${{ github.event.pull_request.number }}
+        run: brew pr-pull --debug --tap=$GITHUB_REPOSITORY $PULL_REQUEST
+
+      - name: Push commits
+        uses: Homebrew/actions/git-try-push@master
+        with:
+          token: ${{ github.token }}
+          branch: main
+
+      - name: Delete branch
+        if: github.event.pull_request.head.repo.fork == false
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: git push --delete origin $BRANCH

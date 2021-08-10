@@ -19,30 +19,32 @@ curlit() {
 }
 
 main() {
-  if [[ -z "$(check_package_exists)" ]]; then
+  if ! check_package_exists; then
     echostatus "The package ${BINTRAY_PACKAGE} does not exit. It will be created"
-    if [[ -z "$(create_package)" ]]; then
+    if ! create_package; then
       echostatus "The package could not be created"
       exit 1
     fi
   fi
 
-  if [[ -z "$(deploy_bottle)" ]]; then
+  if ! deploy_bottle; then
     echostatus "Error deploying the bottle"
     exit 2
   fi
 }
 
 check_package_exists() {
+  local output
+
   echostatus "Checking if package ${BINTRAY_PACKAGE} exists..."
   output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X GET "${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}")
   echostatus "Package check returned status $output"
-  if [[ $output -eq 200 ]]; then
-    echo 1
-  fi
+  [[ $output -eq 200 ]]
 }
 
 create_package() {
+  local data output
+
   echostatus "Creating package ${BINTRAY_PACKAGE}..."
   if [[ -f "${BINTRAY_DESCRIPTOR_FILENAME}" ]]; then
     data="@${BINTRAY_DESCRIPTOR_FILENAME}"
@@ -56,31 +58,31 @@ create_package() {
   fi
   output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X POST -d "${data}" "${API}/packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}")
   echostatus "Package upload returned status $output"
-  if [[ $output -eq 201 ]]; then
-    echo 1
-  fi
+
+  [[ $output -eq 201 ]]
 }
 
 deploy_bottle() {
-  if [[ $(upload_content) ]]; then
+  local output
+
+  if upload_content; then
     echostatus "Publishing ${BOTTLE}..."
     output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -X POST "${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BOTTLE_VERSION}/publish" -d "{ \"discard\": \"false\" }")
     echostatus "Content publish returned status $output"
-    if [[ $output -eq 200 ]]; then
-      echo 1
-    fi
+    [[ $output -eq 200 ]]
   else
     echostatus "[SEVERE] First you should upload your bottle ${BOTTLE}"
+    false
   fi
 }
 
 upload_content() {
+  local output
+
   echostatus "Uploading ${BOTTLE}..."
   output=$(curlit --write-out "%{http_code}" --silent --output /dev/null -T "${BOTTLE}" -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BOTTLE_VERSION}" "${API}/content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BOTTLE}?override=1")
   echostatus "Content upload returned status $output"
-  if [[ $output -eq 201 ]]; then
-    echo 1
-  fi
+  [[ $output -eq 201 ]]
 }
 
 main "$@"

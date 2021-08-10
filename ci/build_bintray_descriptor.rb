@@ -1,28 +1,28 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'json'
+require "json"
 
 descriptor = {
   package: {
-    name: ENV['BINTRAY_PACKAGE'],
-    repo: ENV['BINTRAY_REPO'],
-    subject: ENV['BINTRAY_SUBJECT']
+    name: ENV["BINTRAY_PACKAGE"],
+    repo: ENV["BINTRAY_REPO"],
+    subject: ENV["BINTRAY_SUBJECT"],
   },
 
   version: {
-    name: ENV['BOTTLE_VERSION'],
-    gpgSign: false
+    name: ENV["BOTTLE_VERSION"],
+    gpgSign: false,
   },
 
   files: [
     {
-      includePattern: ENV['BOTTLE_LOCAL_FILENAME'],
-      uploadPattern: ENV['BOTTLE_FILENAME']
+      includePattern: ENV["BOTTLE_LOCAL_FILENAME"],
+      uploadPattern: ENV["BOTTLE_FILENAME"],
     },
   ],
 
-  publish: true
+  publish: true,
 }
 
-JSON.dump(descriptor, File.open(ENV['BINTRAY_DESCRIPTOR_FILENAME'], 'w'))
+JSON.dump(descriptor, File.open(ENV["BINTRAY_DESCRIPTOR_FILENAME"], "w"))

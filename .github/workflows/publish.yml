@@ -5,8 +5,6 @@ on: [push]
 env:
   FORMULA: ./Formula/rnp.rb
   OPTS: ""
-  BINTRAY_PACKAGE: rnp
-  BINTRAY_DESCRIPTOR_FILENAME: bintray_descriptor.json
 jobs:
   build:
     runs-on: macos-latest
@@ -22,13 +20,3 @@ jobs:
       run: |
         brew bottle --json --force-core-tap --no-rebuild ${FORMULA}
         source ci/read_bottle_metadata.sh
-        ci/build_bintray_descriptor
-    - name: Publish to Bintray
-      env:
-        BINTRAY_SUBJECT: rnpgp
-        BINTRAY_USER: rnp-ci
-        BINTRAY_API_KEY: "${{ secrets.BINTRAY_CI_TOKEN }}"
-        BINTRAY_REPO: rnp
-      run: |
-        source ci/read_bottle_metadata.sh
-        ci/push_to_bintray

@@ -22,7 +22,7 @@ jobs:
       run: |
         brew bottle --json --force-core-tap --no-rebuild ${FORMULA}
         source ci/read_bottle_metadata.sh
-        ci/build_bintray_descriptor.rb
+        ci/build_bintray_descriptor
     - name: Publish to Bintray
       env:
         BINTRAY_SUBJECT: rnpgp
@@ -31,4 +31,4 @@ jobs:
         BINTRAY_REPO: rnp
       run: |
         source ci/read_bottle_metadata.sh
-        ci/pushToBintray.sh
+        ci/push_to_bintray

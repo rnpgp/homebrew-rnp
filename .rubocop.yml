@@ -2,13 +2,10 @@
 inherit_from:
   - https://raw.githubusercontent.com/riboseinc/oss-guides/master/ci/rubocop.yml
 
-# local repo-specific modifications
-# ...
-
 Layout/SpaceAroundOperators:
   Exclude:
     - Formula/rnp.rb
 
 Layout/LineLength:
-  Max: 120
-
+  Exclude:
+    - Formula/rnp.rb

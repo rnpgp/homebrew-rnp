@@ -7,5 +7,4 @@ Layout/SpaceAroundOperators:
     - Formula/rnp.rb
 
 Layout/LineLength:
-  Exclude:
-    - Formula/rnp.rb
+  Max: 120

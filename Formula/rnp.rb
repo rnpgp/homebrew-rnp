@@ -13,19 +13,24 @@ class Rnp < Formula
   depends_on "json-c"
 
   def install
-    system "cmake", "-S", ".", "-B", "build", "-DBUILD_TESTING=OFF", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build",
+           "-DBUILD_TESTING=OFF", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    testin = testpath/"message.txt"
+    testin = testpath / "message.txt"
     testin.write "hello"
-    encrypted = testpath/"enc.rnp"
-    decrypted = testpath/"dec.rnp"
+    encr = "#{testpath}/enc.rnp"
+    decr = "#{testpath}/dec.rnp"
     shell_output("#{bin}/rnpkeys --generate-key --password=PASSWORD")
-    shell_output("#{bin}/rnp -c --password DUMMY --output #{encrypted} #{testin}")
-    shell_output("#{bin}/rnp --decrypt --password DUMMY --output #{decrypted} #{encrypted}")
-    cmp testin, decrypted
+    shell_output(
+      "#{bin}/rnp -c --password DUMMY --output #{encr} #{testin}",
+    )
+    shell_output(
+      "#{bin}/rnp --decrypt --password DUMMY --output #{decr} #{encr}",
+    )
+    cmp testin, decr
   end
 end

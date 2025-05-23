@@ -16,7 +16,7 @@ jobs:
       matrix:
         # Test all options
         os: [ ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm, ubuntu-22.04-arm ]
-        formula: [ rnp.rb ]
+        formula: [ rnp ]
         experimental: [ false ]
     steps:
       - uses: actions/checkout@v4

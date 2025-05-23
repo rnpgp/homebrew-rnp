@@ -3,8 +3,8 @@
 class Rnp < Formula
   desc "High performance C++ OpenPGP library used by Mozilla Thunderbird"
   homepage "https://github.com/rnpgp/rnp"
-  url "https://github.com/rnpgp/rnp/releases/download/v0.17.1/rnp-v0.17.1.tar.gz"
-  sha256 "3095e2439ecb7b65f0ab72b7bbfafeb39bb1dda3c24c2ae110719a41bbfbf37d"
+  url "https://github.com/rnpgp/rnp/archive/refs/tags/del_20240828_ap6_bsi.tar.gz"
+  sha256 "c1c79477455193c7b4beb8ca0556064d110f2983bb0c2c60d5eafa3a194dd127"
   license all_of: ["MIT", "BSD-2-Clause", "BSD-3-Clause"]
   head "https://github.com/rnpgp/rnp.git", branch: "main"
 

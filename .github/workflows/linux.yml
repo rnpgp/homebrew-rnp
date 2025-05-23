@@ -1,0 +1,43 @@
+name: linux
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-linux:
+    name: Install on Linux
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: true
+      max-parallel: 6
+      matrix:
+        # Test all options
+        os: [ ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm, ubuntu-22.04-arm ]
+        formula: [ rnp.rb ]
+        experimental: [ false ]
+    steps:
+      - uses: actions/checkout@v4
+
+      # https://docs.brew.sh/Homebrew-on-Linux
+      - run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+          test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bash_profile
+          echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.profile
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+
+      - run: brew update-reset
+
+      - run: brew install --build-from-source --verbose --include-test --formula Formula/${{ matrix.formula }}.rb
+        # To ignore potential: The `brew link` step did not complete successfully
+        # continue-on-error: true
+
+      - run: which ${{ matrix.executable || matrix.formula }}
+
+      - run: brew test --verbose ${{ matrix.formula }}
+
+      - run: brew uninstall ${{ matrix.formula }}

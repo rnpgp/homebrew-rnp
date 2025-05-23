@@ -1,0 +1,43 @@
+name: macos
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test-macos:
+    name: Install macOS
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-13: intel; macos-14, macos-15: arm64
+        os: [ macos-15, macos-14, macos-13 ]
+        formula: [ rnp ]
+        experimental: [ false ]
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    concurrency:
+      group: '${{ github.workflow }}-${{ matrix.os }}-${{ matrix.formula }}-${{ github.head_ref || github.ref_name }}'
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: brew update-reset
+
+      - name: setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+
+      - run: |
+          brew install --build-from-source --verbose --formula Formula/${{ matrix.formula }}.rb
+
+      - run: brew audit --strict --formula ${{ matrix.formula }}
+
+      - run: which ${{ matrix.executable || matrix.formula }}
+
+      - run: brew test --verbose ${{ matrix.formula }}
+
+      - run: brew uninstall ${{ matrix.formula }}

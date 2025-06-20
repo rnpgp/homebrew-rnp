@@ -12,7 +12,7 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: true
-      max-parallel: 6
+      max-parallel: 4
       matrix:
         # Test all options
         os: [ ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm, ubuntu-22.04-arm ]
@@ -33,8 +33,6 @@ jobs:
       - run: brew update-reset
 
       - run: brew install --build-from-source --verbose --include-test --formula Formula/${{ matrix.formula }}.rb
-        # To ignore potential: The `brew link` step did not complete successfully
-        # continue-on-error: true
 
       - run: which ${{ matrix.executable || matrix.formula }}
 

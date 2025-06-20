@@ -26,13 +26,9 @@ class Rnp < Formula
     testin.write "hello"
     encr = "#{testpath}/enc.rnp"
     decr = "#{testpath}/dec.rnp"
-    shell_output("#{bin}/rnpkeys --generate-key --password=PASSWORD")
-    shell_output(
-      "#{bin}/rnp -c --password DUMMY --output #{encr} #{testin}",
-    )
-    shell_output(
-      "#{bin}/rnp --decrypt --password DUMMY --output #{decr} #{encr}",
-    )
+    system bin/"rnpkeys", "--generate-key", "--password=PASSWORD"
+    system bin/"rnp -c --password DUMMY --output #{encr} #{testin}"
+    system bin/"rnp --decrypt --password DUMMY --output #{decr} #{encr}"
     cmp testin, decr
   end
 end

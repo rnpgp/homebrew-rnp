@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Rnp < Formula
   desc "High performance C++ OpenPGP library used by Mozilla Thunderbird"
   homepage "https://github.com/rnpgp/rnp"
@@ -8,6 +6,10 @@ class Rnp < Formula
   license all_of: ["MIT", "BSD-2-Clause", "BSD-3-Clause"]
   head "https://github.com/rnpgp/rnp.git", branch: "main"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
   depends_on "cmake" => :build
   depends_on "botan"
   depends_on "json-c"
@@ -15,20 +17,20 @@ class Rnp < Formula
   uses_from_macos "zlib"
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-           "-DBUILD_TESTING=OFF", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    testin = testpath / "message.txt"
-    testin.write "hello"
-    encr = "#{testpath}/enc.rnp"
-    decr = "#{testpath}/dec.rnp"
+    (testpath/"message.txt").write "hello"
+    encr = testpath/"enc.rnp"
+    decr = testpath/"dec.rnp"
+
     system bin/"rnpkeys", "--generate-key", "--password=PASSWORD"
-    system bin/"rnp -c --password DUMMY --output #{encr} #{testin}"
-    system bin/"rnp --decrypt --password DUMMY --output #{decr} #{encr}"
-    cmp testin, decr
+    system bin/"rnp", "-c", "--password", "DUMMY", "--output", encr, "message.txt"
+    system bin/"rnp", "--decrypt", "--password", "DUMMY", "--output", decr, encr
+
+    assert_equal "hello", decr.read
   end
 end

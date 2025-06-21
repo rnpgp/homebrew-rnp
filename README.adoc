@@ -1,25 +1,13 @@
 = Homebrew formula for RNP
 
+[NOTE]
+====
+RNP is now packaged in Homebrew core.
+
+Please migrate from this tap to the core formula.
+====
+
 This tap contains formulae relating to https://github.com/rnpgp/rnp[rnp].
-
-== Quick install
-
-Run this and it's all done.
-
-[source,sh]
-----
-brew install rnpgp/rnp/rnp
-----
-
-== Install Tap
-
-Alternatively install the tap, then the formula:
-
-[source,sh]
-----
-brew tap rnpgp/rnp
-brew install --HEAD rnp
-----
 
 == Install rnp
 
@@ -27,61 +15,5 @@ To install the latest version, you can use the `--HEAD` option:
 
 [source,sh]
 ----
-brew install --HEAD rnp
+brew install rnp
 ----
-
-If the formula conflicts with one from `Homebrew/homebrew` or another
-tap, you can run:
-
-[source,sh]
-----
-brew install --HEAD rnpgp/rnp/rnp
-----
-
-== rnp HEAD requires botan HEAD
-
-The `rnp` HEAD formula must be used with `botan` HEAD. See the
-Troubleshooting section if you run into `botan` problems.
-
-[source,sh]
-----
-brew unlink botan
-brew install --HEAD botan
-----
-
-== Acceptable Formulae
-
-You can read Homebrew's Acceptable Formulae document
-https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md[here].
-
-== Troubleshooting
-
-First, please run `brew update` and `brew doctor`.
-
-Second, read the
-https://github.com/Homebrew/brew/blob/master/docs/Troubleshooting.md#troubleshooting[Troubleshooting
-Checklist].
-
-=== Botan
-
-If you got '`Botan build is missing a required feature`' during
-the configure then you need to install botan using the `--HEAD` option:
-
-[source,sh]
-----
-brew unlink botan
-brew install --HEAD botan
-----
-
-*If you don't read these it will take us far longer to help you with
-your problem.*
-
-== More Documentation
-
-`brew help`, `man brew` or check
-https://github.com/Homebrew/brew/tree/master/docs#readme[our documentation].
-
-== License
-
-Code is under the
-https://github.com/Homebrew/brew/tree/master/LICENSE.txt[BSD 2 Clause license].
